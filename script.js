@@ -44,16 +44,14 @@ createGrid();
 function inputControl() {
   //TODO finish
   for (let i = 0; i < 81; i++) {
-    document
-      .querySelector(`#sudoku-input-js-${i}`)
-      .addEventListener("keydown", (event) => {
-        movement(event, i);
-      });
+    const elem = document.querySelector(`#sudoku-input-js-${i}`);
+    elem.addEventListener("keydown", (event) => {
+      movement(event, i);
+    });
   }
 }
 
 function movement(event, i) {
-  //TODO finish
   const key = event.key;
   let column = i % 9;
   let row = Math.floor(i / 9);
@@ -87,6 +85,10 @@ function movement(event, i) {
       break;
     case "9":
       document.querySelector(`#sudoku-input-js-${i}`).value = "9";
+      break;
+    case "Backspace":
+    case "Delete":
+      document.querySelector(`#sudoku-input-js-${i}`).value = "";
       break;
 
     //movment arrows + enter
