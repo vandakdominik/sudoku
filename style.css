@@ -28,7 +28,7 @@ body {
 
 #sudoku-game {
   display: grid;
-  grid-template-columns: 3em 3em 3em 3em 3em 3em 3em 3em 3em;
+  grid-template-columns: repeat(9, 3em);
   row-gap: 2px;
   column-gap: 2px;
 }
@@ -42,10 +42,30 @@ body {
   height: 3em;
   text-align: center;
   font-size: 1em;
+  caret-color: transparent;
 }
+
+@media (max-width: 500px) {
+  #sudoku-main h1 {
+    font-size: 1.75em;
+    margin-top: 0.15em;
+    margin-bottom: 0.15em;
+  }
+
+  #sudoku-game {
+    grid-template-columns: repeat(9, 2em);
+    row-gap: 1px;
+    column-gap: 1px;
+  }
+
+  .sudoku-input {
+    border-width: 1px;
+    height: 2em;
+  }
+}
+
 input[data-border-color="black"] {
   border-color: black;
-  caret-color: transparent;
 }
 input[data-border-color="gray"] {
   border-color: gray;
@@ -69,6 +89,14 @@ section {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#sudoku-status {
+  margin: 0.25em 0;
+}
+
+#control-buttons {
+  margin: 0 0 0.5em 0;
 }
 
 button {
