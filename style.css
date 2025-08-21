@@ -45,6 +45,7 @@ body {
 }
 input[data-border-color="black"] {
   border-color: black;
+  caret-color: transparent;
 }
 input[data-border-color="gray"] {
   border-color: gray;

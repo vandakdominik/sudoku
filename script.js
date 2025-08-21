@@ -52,7 +52,8 @@ function inputControl() {
     elem.addEventListener("blur", () => {
       elem.value = /^[1-9]$/.test(elem.value) ? elem.value : "";
     });
-    /*
+
+    /* should not be required
     //removes character even before its out of focus
     elem.addEventListener("keyup", () => {
       elem.value = /^[1-9]$/.test(elem.value) ? elem.value : "";
@@ -67,7 +68,41 @@ function movement(event, i) {
   let row = Math.floor(i / 9);
   let index;
 
+  event.preventDefault();
   switch (key) {
+    //add cases for numbers to overwrite whats inside input
+    case "1":
+      document.querySelector(`#sudoku-input-js-${i}`).value = "1";
+      break;
+    case "2":
+      document.querySelector(`#sudoku-input-js-${i}`).value = "2";
+      break;
+    case "3":
+      document.querySelector(`#sudoku-input-js-${i}`).value = "3";
+      break;
+    case "4":
+      document.querySelector(`#sudoku-input-js-${i}`).value = "4";
+      break;
+    case "5":
+      document.querySelector(`#sudoku-input-js-${i}`).value = "5";
+      break;
+    case "6":
+      document.querySelector(`#sudoku-input-js-${i}`).value = "6";
+      break;
+    case "7":
+      document.querySelector(`#sudoku-input-js-${i}`).value = "7";
+      break;
+    case "8":
+      document.querySelector(`#sudoku-input-js-${i}`).value = "8";
+      break;
+    case "9":
+      document.querySelector(`#sudoku-input-js-${i}`).value = "9";
+      break;
+    case "Backspace":
+    case "Delete":
+      document.querySelector(`#sudoku-input-js-${i}`).value = "";
+      break;
+
     //movement arrows + enter
     case "ArrowUp":
       event.preventDefault();
@@ -99,10 +134,6 @@ function movement(event, i) {
     case "Enter":
       index = (i + 1) % 81;
       document.querySelector(`#sudoku-input-js-${index}`).focus();
-      break;
-    default:
-      //limits the number of possible characters to 1
-      document.querySelector(`#sudoku-input-js-${i}`).value = "";
       break;
   }
 }
