@@ -107,3 +107,14 @@ footer a:hover {
   color: rgb(224, 224, 224);
   text-decoration: underline;
 }
+
+/* Remove spinners in Chrome, Safari, Edge, and Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Remove spinners in Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

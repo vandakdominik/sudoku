@@ -14,7 +14,7 @@ sudokuData.fill(null); //null == empty
 function createGrid() {
   let gameHtml = "";
   for (let i = 0; i < 81; i++) {
-    gameHtml += `<input type="text" maxlength="1" id="sudoku-input-js-${i}" class="sudoku-input" data-border-color="black" readonly>`;
+    gameHtml += `<input type="number" id="sudoku-input-js-${i}" class="sudoku-input" data-border-color="black">`;
   }
 
   document.querySelector("#sudoku-game").innerHTML = gameHtml;
@@ -48,6 +48,16 @@ function inputControl() {
     elem.addEventListener("keydown", (event) => {
       movement(event, i);
     });
+    //only 1 to 9 numbers can be entered (on any device)
+    elem.addEventListener("blur", () => {
+      elem.value = /^[1-9]$/.test(elem.value) ? elem.value : "";
+    });
+    /*
+    //removes character even before its out of focus
+    elem.addEventListener("keyup", () => {
+      elem.value = /^[1-9]$/.test(elem.value) ? elem.value : "";
+    });
+    */
   }
 }
 
@@ -58,41 +68,9 @@ function movement(event, i) {
   let index;
 
   switch (key) {
-    //add cases for numbers to overwrite whats inside input
-    case "1":
-      document.querySelector(`#sudoku-input-js-${i}`).value = "1";
-      break;
-    case "2":
-      document.querySelector(`#sudoku-input-js-${i}`).value = "2";
-      break;
-    case "3":
-      document.querySelector(`#sudoku-input-js-${i}`).value = "3";
-      break;
-    case "4":
-      document.querySelector(`#sudoku-input-js-${i}`).value = "4";
-      break;
-    case "5":
-      document.querySelector(`#sudoku-input-js-${i}`).value = "5";
-      break;
-    case "6":
-      document.querySelector(`#sudoku-input-js-${i}`).value = "6";
-      break;
-    case "7":
-      document.querySelector(`#sudoku-input-js-${i}`).value = "7";
-      break;
-    case "8":
-      document.querySelector(`#sudoku-input-js-${i}`).value = "8";
-      break;
-    case "9":
-      document.querySelector(`#sudoku-input-js-${i}`).value = "9";
-      break;
-    case "Backspace":
-    case "Delete":
-      document.querySelector(`#sudoku-input-js-${i}`).value = "";
-      break;
-
-    //movment arrows + enter
+    //movement arrows + enter
     case "ArrowUp":
+      event.preventDefault();
       row--;
       if (row === -1) {
         row = 8;
@@ -109,6 +87,7 @@ function movement(event, i) {
       document.querySelector(`#sudoku-input-js-${index}`).focus();
       break;
     case "ArrowDown":
+      event.preventDefault();
       index = (i + 9) % 81;
       document.querySelector(`#sudoku-input-js-${index}`).focus();
       break;
@@ -120,6 +99,10 @@ function movement(event, i) {
     case "Enter":
       index = (i + 1) % 81;
       document.querySelector(`#sudoku-input-js-${index}`).focus();
+      break;
+    default:
+      //limits the number of possible characters to 1
+      document.querySelector(`#sudoku-input-js-${i}`).value = "";
       break;
   }
 }
