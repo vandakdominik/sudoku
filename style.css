@@ -34,7 +34,7 @@ body {
 }
 
 .sudoku-input {
-  border-width: 2px;
+  border-width: 0.15em;
   border-style: solid;
   outline: none;
   background-color: rgb(53, 53, 53);
@@ -45,7 +45,7 @@ body {
   caret-color: transparent;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 34em) {
   #sudoku-main h1 {
     font-size: 1.75em;
     margin-top: 0.15em;
