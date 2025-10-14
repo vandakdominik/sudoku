@@ -52,13 +52,6 @@ function inputControl() {
     elem.addEventListener("blur", () => {
       elem.value = /^[1-9]$/.test(elem.value) ? elem.value : "";
     });
-
-    /* should not be required
-    //removes character even before its out of focus
-    elem.addEventListener("keyup", () => {
-      elem.value = /^[1-9]$/.test(elem.value) ? elem.value : "";
-    });
-    */
   }
 }
 
@@ -141,8 +134,7 @@ function movement(event, i) {
 //clears the grid
 function reset() {
   sudokuData.fill(null);
-  updataSudoku(sudokuData);
-  //console.log(sudokuData);
+  updateSudoku(sudokuData);
   for (let i = 0; i < 81; i++) {
     document.querySelector(`#sudoku-input-js-${i}`).dataset.borderColor =
       "black";
@@ -166,7 +158,6 @@ function solve() {
         document.querySelector(`#sudoku-input-js-${i}`).value
       );
       sudokuData[i] = int;
-      //console.log(sudokuData);
     }
   }
 
@@ -179,17 +170,36 @@ function solve() {
   let solvable = solveAlgorithm(sudokuSolutionData);
   if (solvable) {
     statusElem.innerText = "Finished";
-    updataSudoku(sudokuSolutionData);
+    updateSudoku(sudokuSolutionData);
   } else {
     statusElem.innerText = "No valid solution";
   }
 }
 
-function updataSudoku(sudokuData) {
+function updateSudoku(sudokuData) {
   for (let i = 0; i < 81; i++) {
     document.querySelector(`#sudoku-input-js-${i}`).value = sudokuData[i];
   }
 }
+
+//console logs how it works in more detail
+/*
+function ConsoleLog(sudokuSolutionData) {
+  console.log("\n");
+  for (let i = 0; i < 9; i++) {
+    let row = "";
+    for (let j = 0; j < 9; j++) {
+      let number = sudokuSolutionData[i * 9 + j];
+      if (number === null) {
+        number = " ";
+      }
+      row += " " + number + " ";
+    }
+    console.log(row);
+  }
+  console.log("\n");
+}
+  */
 
 function solveAlgorithm(sudokuSolutionData, blockNumber = 0, blockIndex = -1) {
   //blockIndex = -1 because we increment first (with 0 we would skip first block)
@@ -202,7 +212,7 @@ function solveAlgorithm(sudokuSolutionData, blockNumber = 0, blockIndex = -1) {
 
   //base case
   if (blockNumber >= 9) {
-    updataSudoku(sudokuSolutionData);
+    updateSudoku(sudokuSolutionData);
     return true;
   }
   const index = sudokuSubGrid[blockNumber] + sudokuOffset[blockIndex];
@@ -210,6 +220,7 @@ function solveAlgorithm(sudokuSolutionData, blockNumber = 0, blockIndex = -1) {
     for (let i = 1; i <= 9; i++) {
       //add to array if it can be there
       sudokuSolutionData[index] = i;
+      //ConsoleLog(sudokuSolutionData); //console logs how it works in more detail
       if (!checkValidityOne(sudokuSolutionData, blockNumber, blockIndex)) {
         //if its not valid number try other
         sudokuSolutionData[index] = null;
@@ -228,6 +239,7 @@ function solveAlgorithm(sudokuSolutionData, blockNumber = 0, blockIndex = -1) {
   } else {
     return solveAlgorithm(sudokuSolutionData, blockNumber, blockIndex);
   }
+  sudokuSolutionData[index] = null;
   return false;
 }
 
@@ -239,14 +251,6 @@ function checkValidity(sudokuData, highlightConflicts = false) {
       if (sudokuData[index] === null) {
         continue;
       }
-      /* //input is not readonly so checking for incorrect values is not necesary
-      if(isNaN(sudokuData[index]) || (sudokuData[index] > 9 || sudokuData[index] < 1)){
-        document.querySelector(`#sudoku-input-js-${index}`).dataset.borderColor = "red";
-        console.log('not valid');
-        valid = false;
-        continue;
-      };
-      */
       valid &= checkValidityOne(
         sudokuData,
         blockNumber,
@@ -259,7 +263,7 @@ function checkValidity(sudokuData, highlightConflicts = false) {
 }
 
 //block number specifies what 3*3 sub grid in 9*9 main grid is the number part of.
-//block index represents whitch number it is in 3*3 sub grid
+//block index represents which number it is in 3*3 sub grid
 function checkValidityOne(
   sudokuData,
   blockNumber,
@@ -272,7 +276,7 @@ function checkValidityOne(
   let valid = true;
 
   //check row, column, block
-  //row check (check all horizontaly)
+  //row check (check all horizontally)
   for (let columnIndex = 0; columnIndex < 9; columnIndex++) {
     const checkIndex = row * 9 + columnIndex;
     if (checkIndex === index) {
@@ -291,7 +295,7 @@ function checkValidityOne(
     }
   }
 
-  //column check (check all verticaly)
+  //column check (check all vertically)
   for (let rowIndex = 0; rowIndex < 9; rowIndex++) {
     const checkIndex = rowIndex * 9 + column;
     if (checkIndex === index) {
